@@ -220,6 +220,19 @@ export const ProductsPage: React.FC<Props> = ({ type }) => {
     setIsSortTypeDropdownOpen(false);
   }
 
+  const changeFilter = useCallback(
+    debounce((value: string) => {
+      setFilter(value);
+
+      if (value === '') {
+        changeSearchParams('search');
+      } else {
+        changeSearchParams('search', value);
+      }
+    }, 500),
+    [changeSearchParams],
+  );
+
   function handleSearchValueChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
 
@@ -235,21 +248,8 @@ export const ProductsPage: React.FC<Props> = ({ type }) => {
     }
   }
 
-  const changeFilter = useCallback(
-    debounce((value: string) => {
-      setFilter(value);
-
-      if (value === '') {
-        changeSearchParams('search');
-      } else {
-        changeSearchParams('search', value);
-      }
-    }, 500),
-    [changeSearchParams],
-  );
-
-  function getSortTypeValue(type: ProductsSortType): string {
-    switch (type) {
+  function getSortTypeValue(sortType: ProductsSortType): string {
+    switch (sortType) {
       case 'age':
         return t.productsPage.newest;
       case 'title':
@@ -484,18 +484,18 @@ export const ProductsPage: React.FC<Props> = ({ type }) => {
                 ? Array(8).fill(undefined)
                 : perPageValue === 'All'
                   ? currentProducts.filter(product =>
-                      product.name.toLowerCase().includes(filter.toLowerCase()),
-                    )
+                    product.name.toLowerCase().includes(filter.toLowerCase()),
+                  )
                   : currentProducts
-                      .filter(product =>
-                        product.name
-                          .toLowerCase()
-                          .includes(filter.toLowerCase()),
-                      )
-                      .slice(
-                        (currentPage - 1) * Number(perPageValue),
-                        currentPage * Number(perPageValue),
-                      )
+                    .filter(product =>
+                      product.name
+                        .toLowerCase()
+                        .includes(filter.toLowerCase()),
+                    )
+                    .slice(
+                      (currentPage - 1) * Number(perPageValue),
+                      currentPage * Number(perPageValue),
+                    )
             }
           />
 

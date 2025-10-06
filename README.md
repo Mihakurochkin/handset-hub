@@ -17,7 +17,7 @@ The core features include:
 
 The application is hosted and publicly available at:
 
-****
+**https://handset-hub.vercel.app/**
 
 ## 🛠️ Technologies Used
 
